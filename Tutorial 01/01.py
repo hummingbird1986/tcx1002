@@ -17,11 +17,82 @@ ext_requests=[]
 int_requests=[]
 
 def door_open(position, direction, ext_requests, int_requests):
+    a=0
+    num_ext_requests = []
+    for i in ext_requests:
+        if i == True:
+            num_ext_requests.append(a)
+        a +=1
+    set_ext_floor=set(num_ext_requests)
+    set_int_floor=set(int_requests)
+    total_floor=set_ext_floor | set_int_floor
+    total_floor_list=list(total_floor)
+    # print(total_floor_list)
+    for j in total_floor_list:
+        _index_ext=0
+        _index_int=0
+        _distance=j-position
+        if _distance==0:
+            if position in int_requests:
+                int_requests.remove(position)
+            position+=1
+            break
+        elif _distance > 0:
+            if j in num_ext_requests:
+                _index_ext=total_floor_list.index(j)
+            if position in int_requests:
+                int_requests.remove(position)
+            total_floor_list.pop(_index_ext)
+            position=position+_distance
+            #print(j)
+
+    ext_requests[position-1]=False
+
+    #print("position ",position)
+    # print("distance ",_distance)
+    # print(ext_requests)
+    # print(int_requests)
+    return (ext_requests,int_requests)
+
 def move(position, direction, ext_requests, int_requests):
-    pass
+    _current_floor=[position]
+    a = 0
+    num_ext_requests = []
+    for i in ext_requests:
+        if i == True:
+            num_ext_requests.append(a)
+        a += 1
+    set_ext_floor = set(num_ext_requests)
+    set_int_floor = set(int_requests)
+    set_current_floor = set(_current_floor)
+    total_floor = set_ext_floor | set_int_floor
+    total_floor_list = list(total_floor|set_current_floor)
+    # print(total_floor_list)
+    _current_floor_index = total_floor_list.index(position)
+    # print(_current_floor)
+    for j in total_floor_list[_current_floor_index::direction]:
+
+        if j not in total_floor:
+            j+=1
+        # print("j",j)
+        _distance = j - position
+        # print("distance",_distance)
+        if direction < 0:
+            position = position - _distance
+            break
+        elif direction > 0:
+            position=position+ _distance
+            break
+        else:
+            direction =0
+            break
+
+    tuple=(direction,position)
+    return tuple
 
 
-door_open(1, 1, [False, True, True, True, False], [1, 2])
+# print(position)
+print(door_open(4,-1, [False,False, True, True, False], [2,1]))
 #([False, False, True, True, False], [2])
-move(2, 1, [False, False, False, True, False], [0, 1])
+print(move(2, 1, [False, False, False, True,False ], [0, 1]))
 #(1, 3)
