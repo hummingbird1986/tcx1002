@@ -11,12 +11,12 @@
 #如果没有任何请求，则返回 (0, position)（即：方向为 0，停留在当前位置）。
 #如果输入的初始方向为 0（静止状态），则由你决定如何排列请求的优先级。
 
-def door_open(position, direction, ext_requests, int_requests):
-    position =0
-    direction =0
-    ext_requests = [False, False, False, False, False]
-    int_requests = []
+position=0
+direction=0
+ext_requests=[]
+int_requests=[]
 
+def door_open(position, direction, ext_requests, int_requests):
 def move(position, direction, ext_requests, int_requests):
     pass
 
