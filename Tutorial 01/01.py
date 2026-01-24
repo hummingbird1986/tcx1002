@@ -94,5 +94,5 @@ def move(position, direction, ext_requests, int_requests):
 # print(position)
 print(door_open(4,-1, [False,False, True, True, False], [2,1]))
 #([False, False, True, True, False], [2])
-print(move(2, 1, [False, False, False, True,False ], [0, 1]))
-#(1, 3)
+print(move(3, 1, [False, False, False, False, False], []))
+print(move(3, -1, [True, False, False, False, False], [1]))
