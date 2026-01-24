@@ -20,16 +20,34 @@ rows = [
 def rank_medals(rows):
     sort_name = sort_brown_medals().copy()
     # _sort_name=sort_name.copy()
-    cold_list=[]
-    silver_list=[]
-    brown_list=[]
+    # cold_list=[]
+    # silver_list=[]
+    # brown_list=[]
+    # length = len(sort_name)
+    # for i in range(length):
+    #     for j in range(i + 1, length):
+    #         if sort_name[j][1]  sort_name[i][1]:
+    #             cold_list.append(sort_name[i])
+    #             cold_list.append(sort_name[j])
+    # return cold_list, silver_list, brown_list
+    # sort_name.sort(key=lambda x:x[0],reverse=True)
+    rank = 1
+    final_list = []
     length = len(sort_name)
-    for i in range(length):
-        for j in range(i + 1, length):
-            if sort_name[j][1] == sort_name[i][1]:
-                cold_list.append(sort_name[i])
-                cold_list.append(sort_name[j])
-    return cold_list, silver_list, brown_list
+    for j in range(1,length):
+        i = j-1
+        rank_tuple = (rank, sort_name[i])
+        # for j in range(i+1,length):
+        sum1=(sort_name[i][1]+ sort_name[i][2]+sort_name[i][3])
+        sum2=(sort_name[j][1]+ sort_name[j][2]+sort_name[j][3])
+        if sum1 == sum2 :
+           # rank_tuple=(rank,sort_name[i])
+           pass
+        else:
+           rank += 1
+
+        final_list.append(rank_tuple)
+    return final_list
 
 # def convert_list(rows):
 #     rows_list = []
@@ -75,8 +93,8 @@ def sort_brown_medals():
     return _converted_list
 
 
-print(sort_brown_medals())
-print(rank_medals(rows))
+# print(sort_brown_medals())
+# print(rank_medals(rows))
 #[(1, 'CountryD', 4, 3, 5), (2, 'CountryB', 2, 4, 1), (2, 'CountryC', 2, 4, 1), (3, 'CountryE', 1, 7, 2), (4, 'CountryA', 1, 3, 0)]
 
 
