@@ -2,7 +2,7 @@ import re
 import string
 def find_valid_plates(text):
     result, prefix_number=[],[]
-    match = r'([A-Z]{1,3})\s*([0-9]{1,4})\s*([A-Z]{1})'
+    match = r'\b([A-Z]{1,3})\s*([0-9]{1,4})\s*([A-Z]{1})\b'
     result = re.findall(match, text, re.IGNORECASE)
     # print('result: ',result)
     prefix_number=get_alphabet_mapping(result)
@@ -36,17 +36,18 @@ def get_alphabet_mapping(car_number_alpha):
     prefix_num_lst=[]
     for i in range(len(car_number_alpha)):
         alpha = car_number_alpha[i][0]
-        if len(alpha) == 1:
-            alpha='00'+alpha.upper()
-        elif len(alpha) == 2:
-            alpha='0'+alpha.upper()
-        else:
-            alpha=alpha.upper()
-        alpha_to_number_list = []
-        for j in range(1,len(alpha)):
-           alpha_to_number_list.append(alpha_to_number[alpha[j]])
-           prefix_number_=(alpha,alpha_to_number_list)
-        prefix_num_lst.append(prefix_number_)
+        if alpha.isalpha():
+             if len(alpha) == 1:
+                 alpha='00'+alpha.upper()
+             elif len(alpha) == 2:
+                 alpha='0'+alpha.upper()
+             else:
+                 alpha=alpha.upper()
+             alpha_to_number_list = []
+             for j in range(1,len(alpha)):
+                alpha_to_number_list.append(alpha_to_number[alpha[j]])
+                prefix_number_=(alpha,alpha_to_number_list)
+             prefix_num_lst.append(prefix_number_)
     return prefix_num_lst
 
 
@@ -55,17 +56,18 @@ def get_number_mapping(car_number_number):
     for i in range(len(car_number_number)):
         number_=car_number_number[i][1]
         number_list_=[]
-        for j in number_:
-            number_list_.append(int(j))
-        if len(number_list_) == 1:
-            number_list_ = [0, 0, 0] + number_list_
-        elif len(number_list_) == 2:
-            number_list_ = [0, 0] + number_list_
-        elif len(number_list_) == 3:
-            number_list_ = [0] + number_list_
-        else:
-            pass
-        postfix_num_lst.append(number_list_)
+        if number_.isdigit():
+             for j in number_:
+                 number_list_.append(int(j))
+             if len(number_list_) == 1:
+                 number_list_ = [0, 0, 0] + number_list_
+             elif len(number_list_) == 2:
+                 number_list_ = [0, 0] + number_list_
+             elif len(number_list_) == 3:
+                 number_list_ = [0] + number_list_
+             else:
+                 pass
+             postfix_num_lst.append(number_list_)
 
     return postfix_num_lst
 # mapping=get_alphabet_mapping()
