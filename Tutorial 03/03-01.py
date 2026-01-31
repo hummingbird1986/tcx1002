@@ -21,10 +21,10 @@ def find_valid_plates(text):
         test_number_=check_sum_weights(whole_number[j])
         checksum_=checksum_letter(test_number_)
         # print(checksum_)
-        if checksum_==results[j][2]:
+        if checksum_==results[j][2].upper():
             # print(prefix_number[j][0])
             # print(results[j][1])
-            valid_car_num.append(results[j][0].upper()+results[j][1]+results[j][2])
+            valid_car_num.append(results[j][0].upper()+results[j][1]+results[j][2].upper())
     return valid_car_num
             # print("true car number: ',postfix_number[0]+results[j][1])
 
@@ -85,4 +85,4 @@ def checksum_letter(check_sum_num):
     checksum='AZYXUTSRPMLKJHGEDCB'
     return checksum[i]
 
-print(find_valid_plates('Meet at carpark with plates: SGP1234A, sL 0123 Z, Gbf0307K and S-12 A SG 5443K'))
+print(find_valid_plates('   SNb 9538 e, Gbf307K and S-12 A SG 5443K'))
