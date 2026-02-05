@@ -55,8 +55,21 @@ def status(session_type, start, end, qr_time):
 def attendance(query):
     student_score={}
     history=[]
+    qr_time_list=[]
     if isinstance(query, datetime): #判断是否为 datetime 的类
-        return True
+        for candidate in qr_scans:
+            # query_time_ = candidate[1]
+            if candidate[1] == query:
+                session_id_ = candidate[0]
+                qr_time_ = candidate[1]
+                session_type_ = sessions[session_id_][0].upper()
+                start_time_ = sessions[session_id_][1]
+                end_time_ = sessions[session_id_][2]
+                score_ = status(session_type_, start_time_, end_time_, qr_time_)
+                record_=(candidate[2],candidate[1],score_)
+        qr_time_list.append(record_)
+
+        return qr_time_list
         # return [(name, qr_time, score), (name, qr_time, score), ...]
     elif isinstance(query, str): #判断是否为 String
         for candidate in qr_scans:
@@ -82,4 +95,4 @@ def attendance(query):
 
 print(attendance('alice'))
 print(attendance('ALice')[0]== 2.0)
-print(attendance(datetime(2025,1,1,19,1,0   )
+print(attendance(datetime(2025,1,1,19,1,0  )))
