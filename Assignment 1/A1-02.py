@@ -11,9 +11,9 @@
 # 出勤 (1分)：只要学生在课程结束前完成扫码，即视为出勤。
 # 缺勤 (0分)：课程结束后才扫码或未扫码。
 from datetime import datetime, timedelta
-from operator import truediv
+# from operator import truediv
 
-from jupyter_server.auth import passwd
+# from jupyter_server.auth import passwd
 
 sessions = {
     1: ('LT', datetime(2025,1,1,19,0,0),  datetime(2025,1,1,21,0,0)),
