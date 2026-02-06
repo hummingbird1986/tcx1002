@@ -60,27 +60,34 @@ def attendance(query):
         for candidate in qr_scans:
             # query_time_ = candidate[1]
             if candidate[1] == query:
-                session_id_ = candidate[0]
-                qr_time_ = candidate[1]
-                session_type_ = sessions[session_id_][0].upper()
-                start_time_ = sessions[session_id_][1]
-                end_time_ = sessions[session_id_][2]
-                score_ = status(session_type_, start_time_, end_time_, qr_time_)
+                # session_id_ = candidate[0]
+                # qr_time_ = candidate[1]
+                # session_type_ = sessions[session_id_][0].upper()
+                # start_time_ = sessions[session_id_][1]
+                # end_time_ = sessions[session_id_][2]
+                # score_ = status(session_type_, start_time_, end_time_, qr_time_)
+                session_id_, qr_time_, session_type_, start_time_, end_time_ ,score_ = candidate_helper(candidate)
                 record_=(candidate[2],candidate[1],score_)
+            # else:
+            #     score_ = 0.0
+            #     record_=(candidate[2],query,score_)
         qr_time_list.append(record_)
 
         return qr_time_list
+    # else:
+    #     return False
         # return [(name, qr_time, score), (name, qr_time, score), ...]
     elif isinstance(query, str): #判断是否为 String
         for candidate in qr_scans:
             student_name_=candidate[2]
             if student_name_.upper()==query.upper():
-                session_id_=candidate[0]
-                qr_time_=candidate[1]
-                session_type_=sessions[session_id_][0].upper()
-                start_time_=sessions[session_id_][1]
-                end_time_=sessions[session_id_][2]
-                score_=status(session_type_,start_time_,end_time_,qr_time_)
+                # session_id_=candidate[0]
+                # qr_time_=candidate[1]
+                # session_type_=sessions[session_id_][0].upper()
+                # start_time_=sessions[session_id_][1]
+                # end_time_=sessions[session_id_][2]
+                # score_=status(session_type_,start_time_,end_time_,qr_time_)
+                session_id_, qr_time_, session_type_, start_time_, end_time_ ,score_ = candidate_helper(candidate)
                 history.append((session_id_,qr_time_,score_))
                 if student_name_ not in student_score:
                     student_score[student_name_]=0.0
@@ -92,7 +99,16 @@ def attendance(query):
     else:
         return False
 
+def candidate_helper(candidate_):
+    session_id_ = candidate_[0]
+    qr_time_ = candidate_[1]
+    session_type_ = sessions[session_id_][0].upper()
+    start_time_ = sessions[session_id_][1]
+    end_time_ = sessions[session_id_][2]
+    score_ = status(session_type_, start_time_, end_time_, qr_time_)
+
+    return session_id_, qr_time_, session_type_, start_time_, end_time_,score_
 
 print(attendance('alice'))
 print(attendance('ALice')[0]== 2.0)
-print(attendance(datetime(2025,1,1,19,1,0  )))
+# print(attendance( datetime(2025,1,1,19,3,0)))
