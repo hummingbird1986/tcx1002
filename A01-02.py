@@ -30,9 +30,13 @@ qr_scans = [
     (1, datetime(2025,1,1,19,8,0),  'Bob'),
     (1, datetime(2025,1,1,19,35,0), 'Charlie'),
     (2, datetime(2025,1,8,10,25,0), 'Alice'),
+    (1, datetime(2025,1,1,19,2,0),  'Alice'),
+    (2, datetime(2025,1,8,10,30,0), 'Alice'),
 ]
 
 def status(session_type, start, end, qr_time):
+    if qr_time > end:
+        return 0
     duration_ = (end - start).total_seconds()/60
     half_duration_ = duration_/2
     late_time_= (qr_time-start).total_seconds()/60
@@ -46,58 +50,38 @@ def status(session_type, start, end, qr_time):
        else:
             score_=0.5
     else:
-       if late_time_< duration_:
-            score_=1.0
-       else:
-            score_=0.0
+
+        score_=1
     return score_
 
 def attendance(query):
     student_score={}
     history=[]
-    qr_time_list=[]
+
     if isinstance(query, datetime): #判断是否为 datetime 的类
         for candidate in qr_scans:
             # query_time_ = candidate[1]
             if candidate[1] == query:
-                # session_id_ = candidate[0]
-                # qr_time_ = candidate[1]
-                # session_type_ = sessions[session_id_][0].upper()
-                # start_time_ = sessions[session_id_][1]
-                # end_time_ = sessions[session_id_][2]
-                # score_ = status(session_type_, start_time_, end_time_, qr_time_)
-                session_id_, qr_time_, session_type_, start_time_, end_time_ ,score_ = candidate_helper(candidate)
-                record_=(candidate[2],candidate[1],score_)
-            # else:
-            #     score_ = 0.0
-            #     record_=(candidate[2],query,score_)
-        qr_time_list.append(record_)
-
-        return qr_time_list
-    # else:
-    #     return False
-        # return [(name, qr_time, score), (name, qr_time, score), ...]
+                session_id_= candidate_helper(candidate)[0]
+                disc=query_time_name_helper(candidate[2])
+                list=[]
+                for iterm in disc:
+                    if iterm[0]==session_id_:
+                        list.append(iterm[1])
+        history.append(list[0])
+        return history
     elif isinstance(query, str): #判断是否为 String
         for candidate in qr_scans:
             student_name_=candidate[2]
             if student_name_.upper()==query.upper():
-                # session_id_=candidate[0]
-                # qr_time_=candidate[1]
-                # session_type_=sessions[session_id_][0].upper()
-                # start_time_=sessions[session_id_][1]
-                # end_time_=sessions[session_id_][2]
-                # score_=status(session_type_,start_time_,end_time_,qr_time_)
                 session_id_, qr_time_, session_type_, start_time_, end_time_ ,score_ = candidate_helper(candidate)
                 history.append((session_id_,qr_time_,score_))
                 if student_name_ not in student_score:
                     student_score[student_name_]=0.0
                 student_score[student_name_]+=score_
-                # print(f'score_= {score_:.1f} and session_id_= {session_id_}')
-                # print(student_score)
         return student_score[student_name_],history
-        # return (total_score, [(session_id, qr_time, score), (session_id, qr_time, score)...])
     else:
-        return False
+        return None
 
 def candidate_helper(candidate_):
     session_id_ = candidate_[0]
@@ -106,9 +90,24 @@ def candidate_helper(candidate_):
     start_time_ = sessions[session_id_][1]
     end_time_ = sessions[session_id_][2]
     score_ = status(session_type_, start_time_, end_time_, qr_time_)
-
     return session_id_, qr_time_, session_type_, start_time_, end_time_,score_
 
+def query_time_name_helper(name_):
+    same_name={}
+    # name_list=[]
+    for candidate in qr_scans:
+        if candidate[2].upper()==name_.upper():
+            score_=candidate_helper(candidate)[5]
+            session_id_=candidate_helper(candidate)[0]
+            name_tuple=(name_,candidate[1],int(score_))
+            list_with_session=[session_id_,name_tuple]
+            if name_ not in same_name:
+                same_name[name_] = []
+            same_name[name_].append(list_with_session)
+    name_list=same_name[name_]
+    name_list.sort()
+    return name_list
+
 print(attendance('alice'))
-print(attendance('ALice')[0]== 2.0)
-# print(attendance( datetime(2025,1,1,19,3,0)))
+# print(attendance('ALice')[0]== 2.0)
+print(attendance(datetime(2025,1,8,10,30,0)))
