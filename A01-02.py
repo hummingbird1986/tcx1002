@@ -1,20 +1,4 @@
-# 凡是在课程结束后才扫码的人员，均记为缺勤（0分）。
-# 1. 对于测验/评估课 (AS - Assessments):
-# 缺勤 (0分)：
-# 在课程进行到一半时间之后才到达。
-# 或者，在课程开始 1 小时之后才到达。
-# 迟到 (0.5分)：
-# 在课程开始后的 15 分钟至 1 小时内到达（即：过了 15 分钟但没过 1 小时）。
-# 出勤 (1分)：
-# 在课程开始后的 15 分钟之内到达。
-# 2. 对于讲座 (LT - Lectures) 和 辅导课 (TR - Tutorials):
-# 出勤 (1分)：只要学生在课程结束前完成扫码，即视为出勤。
-# 缺勤 (0分)：课程结束后才扫码或未扫码。
 from datetime import datetime, timedelta
-# from operator import truediv
-
-# from jupyter_server.auth import passwd
-
 sessions = {
     1: ('LT', datetime(2025,1,1,19,0,0),  datetime(2025,1,1,21,0,0)),
     2: ('TR', datetime(2025,1,8,10,30,0), datetime(2025,1,8,12,30,0)),
@@ -68,7 +52,7 @@ def attendance(query):
                 for iterm in disc:
                     if iterm[0]==session_id_:
                         list.append(iterm[1])
-        history.append(list[0])
+        history.append(list[0]) #这里是空的，因为 query 不在列表里。需要  start <=query <= end 来找到 session id
         return history
     elif isinstance(query, str): #判断是否为 String
         for candidate in qr_scans:
