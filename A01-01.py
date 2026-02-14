@@ -33,4 +33,4 @@ print(min_workers([4, 2, 4, 3, 5, 4, 6]))
 # print(highest_demand_days([4, 2, 4, 3, 5, 4, 6]))
 #(7, [2, 3, 4, 2, 5, 0, 2])
 # print(min_workers([1, 1, 1, 1, 1, 2, 2])[0])
-#2
+#
