@@ -7,7 +7,7 @@ def f(s):
   
     if first_ele.lower() in ['a', 'e', 'i', 'o', 'u']:
            type = "V"
-    elif first_ele.isalpha() and first_ele.lower() not in ['a', 'e', 'i', 'o', 'u']:
+    elif first_ele.isalpha():
            type = "C"
     else:
            type = "-"
